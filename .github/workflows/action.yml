@@ -27,8 +27,8 @@ jobs:
         with:
           command: 'push'
           format: 'deb'
-          owner: 'DEMO_ORG'             # Your Cloudsmith account name or org name (namespace)
-          repo: 'DEMO_REPOSITORY'         # Your Cloudsmith Repository name (slug)
+          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
+          repo: 'dev'         # Your Cloudsmith Repository name (slug)
           distro: 'npm'     # Your Distribution  (i.e Debian, Ubuntu)
           release: 'buster'         # Your Distribution Release (i.e xenial, buster)
           republish: 'true'          # needed if version is not changing

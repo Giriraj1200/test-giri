@@ -12,7 +12,7 @@ jobs:
     name: Push a npm package to Cloudsmith using OIDC to authenticate
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get OIDC token
         run: |

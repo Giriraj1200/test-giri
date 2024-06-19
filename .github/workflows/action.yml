@@ -18,6 +18,8 @@ jobs:
         run: |
           value=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" | jq '.value')
           echo "$value"
+          jwt=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"github-service\"}" https://api.cloudsmith.io/openid/interview-giriraj-yadav/ | jq -r '.token' )
+          echo "OIDC token from Cloudsmith: $jwt"
           
       - name: Cloudsmith Push NPM Package
         uses: cloudsmith-io/action@v0.5.3

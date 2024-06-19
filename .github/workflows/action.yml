@@ -18,7 +18,7 @@ jobs:
         run: |
           value=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" | jq '.value')
           token=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"SERVICE_ACCOUNT_SLUG\"}" https://api.cloudsmith.io/openid/interview-giriraj-yadav/ | jq -r '.token')
-          curl --request GET --url https://api.cloudsmith.io/v1/user/self/ --header "X-Api-Key:Bearer 5f493c61e3ed019cc7f69acd7fdee6034524d6c4" --header 'accept: application/json'
+          curl --request GET --url https://api.cloudsmith.io/v1/user/self/ --header "X-Api-Key:Bearer $token" --header 'accept: application/json'
                     
           echo "CLOUDSMITH_API_KEY=5f493c61e3ed019cc7f69acd7fdee6034524d6c4" >> $GITHUB_ENV
           
@@ -29,7 +29,7 @@ jobs:
           format: 'deb'
           owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
           repo: 'dev'         # Your Cloudsmith Repository name (slug)
-          distro: 'npm'     # Your Distribution  (i.e Debian, Ubuntu)
+          distro: 'Ubuntu'     # Your Distribution  (i.e Debian, Ubuntu)
           release: 'buster'         # Your Distribution Release (i.e xenial, buster)
           republish: 'true'          # needed if version is not changing
           file: 'cloudsmith-npm-example-1.0.0.tgz'  # debian package filename

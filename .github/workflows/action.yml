@@ -27,3 +27,14 @@ jobs:
         jwtd $IDTOKEN
         echo "idToken=${IDTOKEN}" >> $GITHUB_OUTPUT
       id: tokenid
+         
+          
+      - name: Cloudsmith Push NPM Package
+        uses: cloudsmith-io/action@v0.5.3
+        with:
+          command: 'push'
+          format: 'npm'
+          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
+          repo: 'dev'        
+          republish: 'true'         
+          file: 'cloudsmith-npm-example-1.0.0.tgz'  

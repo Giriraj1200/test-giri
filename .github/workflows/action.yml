@@ -30,4 +30,4 @@ jobs:
           owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
           repo: 'dev'        
           republish: 'true'         
-          file: 'cloudsmith-npm-example-1.0.0.tgz'  
+          file: 'giriraj_interview.tgz'  

@@ -8,15 +8,33 @@ permissions:
 
 jobs:
   job:
+    environment: Production
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/github-script@v6
-      id: script
-      timeout-minutes: 10
+    - name: Install OIDC Client from Core Package
+      run: npm install @actions/core@1.6.0 @actions/http-client
+    - name: Get Id Token
+      uses: actions/github-script@v6
+      id: idtoken
       with:
-        debug: true
         script: |
-          const token = process.env['ACTIONS_RUNTIME_TOKEN']
-          const runtimeUrl = process.env['ACTIONS_ID_TOKEN_REQUEST_URL']
-          core.setOutput('TOKEN', token.trim())
-          core.setOutput('IDTOKENURL', runtimeUrl.trim())
+          const coredemo = require('@actions/core')
+          let id_token = await coredemo.getIDToken()
+          coredemo.setOutput('id_token', id_token)
+          var xhr = new XMLHttpRequest();
+
+xhr.open("POST", "https://api.cloudsmith.io/openid/interview-giriraj-yadav/");
+xhr.setRequestHeader('content-Type', 'application/json');
+const body = JSON.stringify({
+  service_slug: "SERVICE_ACCOUNT_SLUG",
+  oidc_token: id_token
+});
+xhr.onload = () => {
+  if (xhr.readyState == 4 && xhr.status == 201) {
+    console.log(JSON.parse(xhr.responseText));
+  } else {
+    console.log(`Error: ${xhr.status}`);
+  }
+};
+
+xhr.send("{\n  \"email\": \"xyz@example.com\",\n  \"type\": \"Secondary\"\n}");

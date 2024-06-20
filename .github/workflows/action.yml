@@ -16,8 +16,10 @@ jobs:
 
       - name: Get OIDC token
         run: |
+
           value=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" | jq '.value')
           echo "$value"
+          echo "$ACTIONS_ID_TOKEN_REQUEST_URL"
           token=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"SERVICE_ACCOUNT_SLUG\"}" https://api.cloudsmith.io/openid/interview-giriraj-yadav/ | jq -r '.token')
           echo "OIDC token from Cloudsmith: $token"
           

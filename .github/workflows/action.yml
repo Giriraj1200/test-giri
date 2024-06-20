@@ -1,4 +1,4 @@
-name: Push a debian package to Cloudsmith with OIDC
+name: Push a npm package to Cloudsmith with OIDC
 on:
   push:
     branches: [ main ]
@@ -7,28 +7,17 @@ permissions:
   contents: read
 
 jobs:
-  push:
+  job:
+    environment: Production
     runs-on: ubuntu-latest
-    name: Push a npm package to Cloudsmith using OIDC to authenticate
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-
-      - name: Get OIDC token
-        run: |
-          value=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" | jq '.value')
-          token=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"SERVICE_ACCOUNT_SLUG\"}" https://api.cloudsmith.io/openid/interview-giriraj-yadav/ | jq -r '.token')
-          curl --request GET --url https://api.cloudsmith.io/v1/user/self/ --header "X-Api-Key:Bearer $token" --header 'accept: application/json'
-                    
-          echo "CLOUDSMITH_API_KEY=$token" >> $GITHUB_ENV
-         
-          
-      - name: Cloudsmith Push NPM Package
-        uses: cloudsmith-io/action@v0.5.3
-        with:
-          command: 'push'
-          format: 'npm'
-          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
-          repo: 'dev'        
-          republish: 'true'         
-          file: 'cloudsmith-npm-example-1.0.0.tgz'  
+    - name: Install OIDC Client from Core Package
+      run: npm install @actions/core@1.6.0 @actions/http-client
+    - name: Get Id Token
+      uses: actions/github-script@v6
+      id: idtoken
+      with:
+        script: |
+          const coredemo = require('@actions/core')
+          let id_token = await coredemo.getIDToken()
+          console.log(id_token)

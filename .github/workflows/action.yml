@@ -22,10 +22,9 @@ jobs:
           let id_token = await coredemo.getIDToken()
           coredemo.setOutput('id_token', id_token)
           var xhr = new XMLHttpRequest();
-
-xhr.open("POST", "https://api.cloudsmith.io/openid/interview-giriraj-yadav/");
-xhr.setRequestHeader('content-Type', 'application/json');
-const body = JSON.stringify({
+          xhr.open("POST", "https://api.cloudsmith.io/openid/interview-giriraj-yadav/");
+          xhr.setRequestHeader('content-Type', 'application/json');
+          const body = JSON.stringify({
   service_slug: "SERVICE_ACCOUNT_SLUG",
   oidc_token: id_token
 });

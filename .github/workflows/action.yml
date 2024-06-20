@@ -7,33 +7,27 @@ permissions:
   contents: read
 
 jobs:
-  job:
-    environment: Production
+  push:
     runs-on: ubuntu-latest
+    name: Push a npm package to Cloudsmith using OIDC to authenticate
     steps:
-    - name: Install OIDC Client from Core Package
-      run: npm install @actions/core@1.6.0 @actions/http-client
-    - name: Get Id Token
-      uses: actions/github-script@v6
-      id: idtoken
-      with:
-        script: |
-        const coredemo = require('@actions/core')
-let id_token = await coredemo.getIDToken()
-coredemo.setOutput('id_token', id_token)
-var xhr = new XMLHttpRequest();
-xhr.open("POST", "https://api.cloudsmith.io/openid/interview-giriraj-yadav/");
-xhr.setRequestHeader('content-Type', 'application/json');
-const body = JSON.stringify({
-    service_slug: "SERVICE_ACCOUNT_SLUG",
-    oidc_token: id_token
-});
-xhr.onload = () => {
-    if (xhr.readyState == 4 && xhr.status == 201) {
-        console.log(JSON.parse(xhr.responseText));
-    } else {
-        console.log(`Error: ${xhr.status}`);
-    }
-};
+      - name: Check out code
+        uses: actions/checkout@v3
 
-xhr.send(body);
+      - name: Get OIDC token
+        run: |
+          value=$(curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" | jq '.value')
+          token=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"SERVICE_ACCOUNT_SLUG\"}" https://api.cloudsmith.io/openid/ORGANIZATION/ | jq -r '.token')
+          curl --request GET --url https://api.cloudsmith.io/v1/user/self/ --header "X-Api-Key:Bearer $token" --header 'accept: application/json'
+                    
+          echo "CLOUDSMITH_API_KEY=$token" >> $GITHUB_ENV
+          
+      - name: Cloudsmith Push NPM Package
+        uses: cloudsmith-io/action@v0.5.3
+        with:
+          command: 'push'
+          format: 'npm'
+          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
+          repo: 'dev'        
+          republish: 'true'         
+          file: 'cloudsmith-npm-example-1.0.0.tgz'  

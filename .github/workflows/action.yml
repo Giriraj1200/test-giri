@@ -20,7 +20,12 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: build pakage
-        run: zip giriraj_interview.zip ./* -r
+        run: zip giriraj_interview1.zip ./* -r
+      - name: store the pakage
+        run: actions/upload-artifact@v4
+        with:
+           name: build
+           path: giriraj_interview1.zip
 
 
   deploy:
@@ -46,4 +51,4 @@ jobs:
           owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
           repo: 'dev'        
           republish: 'true'         
-          file: 'giriraj_interview.zip' 
+          file: 'build/giriraj_interview1.zip' 

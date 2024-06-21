@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: build pakage
-        run: fpm -f -s dir - t -zip -v 1.0.0 -n giriraj_interview1
+        run: zip -r giriraj_interview1.zip
       - name: store the pakage
         uses: actions/upload-artifact@v2
         with:

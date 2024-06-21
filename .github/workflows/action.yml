@@ -12,7 +12,19 @@ jobs:
     name: Push a npm package to Cloudsmith using OIDC to authenticate
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: install node
+        uses: npm install
+
+      - name: build pakage
+        uses: - zip -r function.zip *
+      
+      - nmae: store build pakage
+        uses: actions/upload-artifact@v1
+        with:
+      - name: build
+      - path: giriraj_interview1.zip
 
       - name: Get OIDC token
         run: |
@@ -30,4 +42,4 @@ jobs:
           owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
           repo: 'dev'        
           republish: 'true'         
-          file: 'build/giriraj_interview1.tgz'  
+          file: 'build/giriraj_interview1.zip'  

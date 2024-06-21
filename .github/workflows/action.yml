@@ -15,10 +15,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: install node
-        uses: npm install
+        run: |
+           npm install
+           npm run build --if-present
 
       - name: build pakage
-        uses: - zip -r function.zip *
+         run: |
+          zip giriraj_interview1.zip ./* -r
       
       - nmae: store build pakage
         uses: actions/upload-artifact@v1

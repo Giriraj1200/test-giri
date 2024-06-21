@@ -24,7 +24,7 @@ jobs:
       - name: store the pakage
         uses: actions/upload-artifact@v2
         with:
-           name: giriraj_interview1
+           name: build
            path: giriraj_interview1.zip
 
 

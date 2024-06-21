@@ -6,23 +6,18 @@ permissions:
   id-token: write      # Necessary to GH Identity Provider to write the JWT token which Cloudsmith needs to read
   contents: read
 
+workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: build a npm package to Cloudsmith using OIDC to authenticate
+
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: install node
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with: 
+          node-version: "14.x"
+      - name: Install dependencies
         run: npm install
-
-      - name: build pakage
-        run: zip giriraj_interview1.zip ./* -r
-
-      - name: store build pakage
-        uses: actions/upload-artifact@v4
-        with:
-        name: build
-        path: giriraj_interview1.zip
-
+      - name: Run test
+        run: npm test

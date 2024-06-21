@@ -19,8 +19,8 @@ jobs:
 
       - name: build pakage
         run: zip giriraj_interview1.zip ./* -r
-        
-      - nmae: store build pakage
+
+      - name: store build pakage
         uses: actions/upload-artifact@v1
         with:
       - name: build

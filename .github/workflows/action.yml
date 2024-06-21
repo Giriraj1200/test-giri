@@ -26,9 +26,3 @@ jobs:
         name: build
         path: giriraj_interview1.zip
 
-  publish:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-   - name: Cloudsmith Push NPM Package
-     uses: actions/download-artifact@v4

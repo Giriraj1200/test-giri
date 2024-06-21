@@ -35,9 +35,3 @@ jobs:
                     
           echo "CLOUDSMITH_API_KEY=$token" >> $GITHUB_ENV$GITHUB_ENV- name: Cloudsmith Push NPM Package
         uses: cloudsmith-io/action@v0.5.3
-        with:
-          command: 'push'
-          format: 'npm'
-          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
-          repo: 'dev'        
-          republish: 'true'

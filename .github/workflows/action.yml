@@ -6,7 +6,7 @@ permissions:
   id-token: write      # Necessary to GH Identity Provider to write the JWT token which Cloudsmith needs to read
   contents: read
 
-workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest

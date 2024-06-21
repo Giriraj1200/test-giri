@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: build pakage
-        run: tar -czf giriraj_interview.tgz ./*
+        run: tar -czf giriraj_interview1.tgz ./*
       - name: store the pakage
         uses: actions/upload-artifact@v2
         with:

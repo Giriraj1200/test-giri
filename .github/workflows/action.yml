@@ -22,7 +22,7 @@ jobs:
       - name: build pakage
         run: zip giriraj_interview1.zip ./* -r
       - name: store the pakage
-        run: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
            name: build
            path: giriraj_interview1.zip

@@ -40,4 +40,4 @@ jobs:
           format: 'npm'
           owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
           repo: 'dev'        
-          republish: 'true' 
+          republish: 'true'

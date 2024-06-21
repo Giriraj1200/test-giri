@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with: 
           node-version: "14.x"
       - name: Install dependencies
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       
       - name: Get OIDC token
         run: |
@@ -33,4 +33,11 @@ jobs:
           token=$(curl -X POST -H "Content-Type: application/json" -d "{\"oidc_token\":$value, \"service_slug\":\"test-giri\"}" https://api.cloudsmith.io/openid/interview-giriraj-yadav/ | jq -r '.token')
           curl --request GET --url https://api.cloudsmith.io/v1/user/self/ --header "X-Api-Key:Bearer $token" --header 'accept: application/json'
                     
-          echo "CLOUDSMITH_API_KEY=$token" >> $GITHUB_ENV$GITHUB_ENV
+          echo "CLOUDSMITH_API_KEY=$token" >> $GITHUB_ENV$GITHUB_ENV- name: Cloudsmith Push NPM Package
+        uses: cloudsmith-io/action@v0.5.3
+        with:
+          command: 'push'
+          format: 'npm'
+          owner: 'interview-giriraj-yadav'             # Your Cloudsmith account name or org name (namespace)
+          repo: 'dev'        
+          republish: 'true' 
